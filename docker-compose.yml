@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./backend:/var/www/html
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - php
+      - frontend
+      - mysql
+      - phpmyadmin
+    networks:
+      - bridge
+
+  php:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=my_database
+      - DB_USERNAME=admin
+      - DB_PASSWORD=12345678
+    depends_on:
+      - mysql
+    networks:
+      - bridge
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: my_database
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - bridge
+
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    networks:
+      - bridge
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USERNAME=admin
+      - PMA_PASSWORD=12345678
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "8183:80"
+    depends_on:
+      - mysql
+    networks:
+      - bridge
+
+networks:
+  bridge:
+    driver: bridge
