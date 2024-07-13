@@ -8,12 +8,10 @@ use App\Http\Requests\Additional\UserUpdateRequest;
 use App\Http\Resources\Additional\UserResource;
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use jeremykenedy\LaravelRoles\Models\Role;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -27,13 +25,13 @@ class UserController extends Controller
 
             return response()->json([
                 'users' => UserResource::collection($users),
-            ]);
+            ], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error('Failed to fetch users: ' . $e->getMessage());
 
             return response()->json([
                 'message' => 'Failed to fetch users. Please try again later.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -59,13 +57,13 @@ class UserController extends Controller
             return response()->json([
                 'user' => new UserResource($user),
                 'message' => 'User created successfully',
-            ], 201);
+            ], Response::HTTP_CREATED);
         } catch (Exception $e) {
             Log::error('Failed to create user: ' . $e->getMessage());
 
             return response()->json([
                 'message' => 'Failed to create user. Please try again later.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -77,13 +75,13 @@ class UserController extends Controller
         try {
             return response()->json([
                 'user' => new UserResource($user),
-            ]);
-        } catch (\Exception $e) {
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
             Log::error('Failed to fetch user with ID ' . $user->id . ': ' . $e->getMessage());
 
             return response()->json([
                 'message' => 'Failed to fetch user. Please try again later.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -109,12 +107,12 @@ class UserController extends Controller
             return response()->json([
                 'user' => new UserResource($user),
                 'message' => 'User updated successfully',
-            ]);
-        } catch (\Exception $e) {
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
             Log::error('Failed to update user with ID ' . $user->id . ': ' . $e->getMessage());
             return response()->json([
                 'message' => 'Failed to update user. Please try again later.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -129,13 +127,13 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => 'User deleted successfully',
-            ]);
+            ], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error('Failed to delete user with ID ' . $user->id . ': ' . $e->getMessage());
 
             return response()->json([
                 'message' => 'Failed to delete user. Please try again later.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

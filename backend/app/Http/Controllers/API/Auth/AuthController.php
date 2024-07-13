@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -43,7 +44,7 @@ class AuthController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
                 'user' => $user,
-            ]);
+            ], Response::HTTP_OK);
         } catch (ValidationException $e) {
             Log::warning('ValidationException during login', [
                 'errors' => $e->errors(),
@@ -53,7 +54,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'errors' => $e->errors(),
-            ], 422);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Exception $e) {
             Log::error('Exception during login', [
                 'exception' => $e,
@@ -63,7 +64,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'Failed to login. Please try again later.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,7 +87,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'Logged out successfully'
-            ]);
+            ], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error('Exception during logout', [
                 'exception' => $e,
@@ -96,7 +97,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'Failed to logout. Please try again later.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

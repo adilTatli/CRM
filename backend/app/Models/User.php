@@ -44,4 +44,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public static function technicians()
+    {
+        return self::whereHas('roles', function ($query) {
+            $query->where('slug', 'technician');
+        });
+    }
+
+    public function schedules()
+    {
+        return $this->belongsToMany(Schedule::class, 'schedule_technician', 'user_id', 'schedule_id')
+            ->withPivot('area_id')
+            ->withTimestamps();
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class, 'schedule_technician', 'user_id', 'area_id')
+            ->withTimestamps();
+    }
 }
