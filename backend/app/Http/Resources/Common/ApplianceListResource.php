@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Additional;
+namespace App\Http\Resources\Common;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DistributorResource extends JsonResource
+class ApplianceListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,12 @@ class DistributorResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'serial_number' => $this->serial_number,
+            'model_number' => $this->model_number,
+            'brand' => $this->brand,
+            'dop' => $this->dop,
+            'appl_note' => $this->appl_note,
+            'appliance' => new ApplianceResource($this->whenLoaded('appliance')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

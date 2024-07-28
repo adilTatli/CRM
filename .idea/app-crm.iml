@@ -10,7 +10,6 @@
       <sourceFolder url="file://$MODULE_DIR$/backend/tests/Unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/backend/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/carbonphp/carbon-doctrine-types" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/composer" />
@@ -127,6 +126,14 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/eklundkristoffer/seedster" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/jeremykenedy/laravel-roles" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/laravel/helpers" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/darkaonline/l5-swagger" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/annotations" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/lcobucci/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/lcobucci/jwt" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/psr/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/swagger-api/swagger-ui" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/tymon/jwt-auth" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/zircote/swagger-php" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

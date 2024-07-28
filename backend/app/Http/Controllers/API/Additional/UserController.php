@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\Additional;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Additional\UserStoreRequest;
 use App\Http\Requests\Additional\UserUpdateRequest;
-use App\Http\Resources\Additional\UserResource;
+use App\Http\Resources\Common\UserResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +24,7 @@ class UserController extends Controller
             $users = User::all();
 
             return response()->json([
-                'users' => UserResource::collection($users),
+                'users' => \App\Http\Resources\Common\UserResource::collection($users),
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error('Failed to fetch users: ' . $e->getMessage());
@@ -55,7 +55,7 @@ class UserController extends Controller
             }
 
             return response()->json([
-                'user' => new UserResource($user),
+                'user' => new \App\Http\Resources\Common\UserResource($user),
                 'message' => 'User created successfully',
             ], Response::HTTP_CREATED);
         } catch (Exception $e) {
@@ -74,7 +74,7 @@ class UserController extends Controller
     {
         try {
             return response()->json([
-                'user' => new UserResource($user),
+                'user' => new \App\Http\Resources\Common\UserResource($user),
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error('Failed to fetch user with ID ' . $user->id . ': ' . $e->getMessage());

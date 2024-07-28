@@ -12,4 +12,9 @@ class Distributor extends Model
     protected $fillable = [
         'title',
     ];
+
+    public function parts()
+    {
+        return $this->hasMany(Part::class);
+    }
 }

@@ -133,6 +133,14 @@
       <path value="$PROJECT_DIR$/backend/vendor/jeremykenedy/laravel-roles" />
       <path value="$PROJECT_DIR$/backend/vendor/laravel/helpers" />
       <path value="$PROJECT_DIR$/backend/vendor/eklundkristoffer/seedster" />
+      <path value="$PROJECT_DIR$/backend/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/backend/vendor/darkaonline/l5-swagger" />
+      <path value="$PROJECT_DIR$/backend/vendor/zircote/swagger-php" />
+      <path value="$PROJECT_DIR$/backend/vendor/swagger-api/swagger-ui" />
+      <path value="$PROJECT_DIR$/backend/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/backend/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/backend/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/backend/vendor/tymon/jwt-auth" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

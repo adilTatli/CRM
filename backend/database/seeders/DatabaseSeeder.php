@@ -16,5 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionsTableSeeder::class);
         $this->call(ConnectRelationshipsSeeder::class);
         $this->call(UsersTableSeeder::class);
+        $this->call(TaskStatusSeeder::class);
+        $this->call(PartStatusSeeder::class);
     }
 }

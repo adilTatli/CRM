@@ -12,4 +12,14 @@ class Appliance extends Model
     protected $fillable = [
         'title',
     ];
+
+    public function applianceLists()
+    {
+        return $this->hasMany(ApplianceList::class);
+    }
+
+    public function parts()
+    {
+        return $this->hasMany(Part::class);
+    }
 }

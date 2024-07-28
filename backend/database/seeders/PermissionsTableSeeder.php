@@ -55,9 +55,9 @@ class PermissionsTableSeeder extends Seeder
                 'model'       => 'Permission',
             ],
             [
-                'name'        => 'Can View Enter',
-                'slug'        => 'view.enter',
-                'description' => 'Can view enter panel',
+                'name'        => 'Can View Task',
+                'slug'        => 'view.task',
+                'description' => 'Can view task panel',
                 'model'       => 'Permission',
             ],
         ];

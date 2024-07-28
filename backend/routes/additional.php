@@ -8,7 +8,7 @@ use App\Http\Controllers\API\Additional\ScheduleController;
 use App\Http\Controllers\API\Additional\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['permission:view.additional'])->group(function () {
+Route::middleware(['permission:view.additional'])->prefix('additional')->group(function () {
     Route::apiResources([
         'users' => UserController::class,
         'appliances' => ApplianceController::class,

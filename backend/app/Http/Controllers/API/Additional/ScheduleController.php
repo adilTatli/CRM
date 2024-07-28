@@ -113,9 +113,8 @@ class ScheduleController extends Controller
             $endTime = $validatedData['end_time'];
             $newDate = $validatedData['date'];
 
-            $existingSchedule = Schedule::where('date', $newDate)->first();
-
-            if ($existingSchedule) {
+            if (Schedule::where('date', $newDate)->exists()) {
+                $existingSchedule = Schedule::where('date', $newDate)->first();
                 $existingSchedule->users()->syncWithoutDetaching(
                     collect($validatedData['technicians'])->mapWithKeys(function ($technicianId) use ($validatedData) {
                         return [$technicianId => ['area_id' => $validatedData['area_id']]];

@@ -8,8 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoleAndPermission;
 
@@ -45,11 +46,38 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Получить идентификатор, который будет храниться в subject claim токена JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Вернуть массив ключ-значение, содержащий любые кастомные claims для добавления в JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
     public static function technicians()
     {
         return self::whereHas('roles', function ($query) {
             $query->where('slug', 'technician');
         });
+    }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_technician')
+            ->withPivot('id', 'date', 'start_time', 'end_time', 'payment_amount', 'paid_at', 'payment_status')
+            ->withTimestamps();
     }
 
     public function schedules()
@@ -63,5 +91,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Area::class, 'schedule_technician', 'user_id', 'area_id')
             ->withTimestamps();
+    }
+
+    public function parts()
+    {
+        return $this->hasMany(Part::class);
+    }
+
+    public function statusChanges()
+    {
+        return $this->hasMany(StatusChange::class);
     }
 }

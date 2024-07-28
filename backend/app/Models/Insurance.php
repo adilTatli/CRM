@@ -12,4 +12,9 @@ class Insurance extends Model
     protected $fillable = [
         'title'
     ];
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

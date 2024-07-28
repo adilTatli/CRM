@@ -4,116 +4,169 @@ namespace App\Http\Controllers\API\Additional;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Additional\ApplianceRequest;
-use App\Http\Resources\Additional\ApplianceResource;
+use App\Http\Resources\Common\ApplianceResource;
 use App\Models\Appliance;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpFoundation\Response;
+use App\Traits\Additional\HandlesResourceCRUD;
 
+/**
+ * @OA\Info(
+ *     title="My Doc API",
+ *     version="1.0.0"
+ * ),
+ * @OA\PathItem(
+ *     path="/api/"
+ * ),
+ */
 class ApplianceController extends Controller
 {
+    use HandlesResourceCRUD;
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/additional/appliances",
+     *     summary="Get list of appliances",
+     *     tags={"Appliance"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of appliances",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Appliance"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
      */
     public function index()
     {
-        try {
-            $appliances = Appliance::all();
-
-            return response()->json([
-                'appliances' => ApplianceResource::collection($appliances),
-            ], Response::HTTP_OK);
-        } catch (Exception $e) {
-            Log::error('Failed to fetch appliances: ' . $e->getMessage());
-
-            return response()->json([
-                'message' => 'Failed to fetch appliances. Please try again later.'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->handleIndex(Appliance::class, ApplianceResource::class, 'Appliance');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/additional/appliances",
+     *     summary="Create a new appliance",
+     *     tags={"Appliance"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ApplianceRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Appliance created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Appliance")
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="Appliance with this title already exists",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
      */
     public function store(ApplianceRequest $request)
     {
-        try {
-            $validatedData = $request->validated();
-
-            $appliance = Appliance::create($validatedData);
-
-            return response()->json([
-                'appliance' => new ApplianceResource($appliance),
-                'message' => 'Appliance created successfully',
-            ], Response::HTTP_CREATED);
-        } catch (Exception $e) {
-            Log::error('Failed to create appliance: ' . $e->getMessage());
-
-            return response()->json([
-                'message' => 'Failed to create appliance. Please try again later.'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->handleStore(Appliance::class, \App\Http\Resources\Common\ApplianceResource::class, $request, 'Appliance');
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/additional/appliances/{appliance}",
+     *     summary="Get an appliance by ID",
+     *     tags={"Appliance"},
+     *     @OA\Parameter(
+     *         name="appliance",
+     *         in="path",
+     *         description="Appliance ID",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Appliance details",
+     *         @OA\JsonContent(ref="#/components/schemas/Appliance")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
      */
     public function show(Appliance $appliance)
     {
-        try {
-            return response()->json([
-                'appliance' => new ApplianceResource($appliance),
-            ], Response::HTTP_OK);
-        } catch (Exception $e) {
-            Log::error('Failed to fetch appliance with ID ' . $appliance->id . ': ' . $e->getMessage());
-
-            return response()->json([
-                'message' => 'Failed to fetch appliance. Please try again later.'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->handleShow(\App\Http\Resources\Common\ApplianceResource::class, $appliance, 'Appliance');
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/additional/appliances/{appliance}",
+     *     summary="Update an existing appliance",
+     *     tags={"Appliance"},
+     *     @OA\Parameter(
+     *         name="appliance",
+     *         in="path",
+     *         description="Appliance ID",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ApplianceRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Appliance updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Appliance")
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="Appliance with this title already exists",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
      */
     public function update(ApplianceRequest $request, Appliance $appliance)
     {
-        try {
-            $validatedData = $request->validated();
-
-            $appliance->update($validatedData);
-
-            return response()->json([
-                'appliance' => new ApplianceResource($appliance),
-                'message' => 'Appliance updated successfully',
-            ], Response::HTTP_OK);
-        } catch (Exception $e) {
-            Log::error('Failed to update appliance with ID ' . $appliance->id . ': ' . $e->getMessage());
-
-            return response()->json([
-                'message' => 'Failed to update appliance. Please try again later.'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->handleUpdate(\App\Http\Resources\Common\ApplianceResource::class, $request, $appliance, 'Appliance');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/additional/appliances/{appliance}",
+     *     summary="Delete an appliance",
+     *     tags={"Appliance"},
+     *     @OA\Parameter(
+     *         name="appliance",
+     *         in="path",
+     *         description="Appliance ID",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Appliance deleted successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
      */
     public function destroy(Appliance $appliance)
     {
-        try {
-            $appliance->delete();
-
-            return response()->json([
-                'message' => 'Appliance deleted successfully',
-            ], Response::HTTP_OK);
-        } catch (Exception $e) {
-            Log::error('Failed to delete appliance with ID ' . $appliance->id . ': ' . $e->getMessage());
-
-            return response()->json([
-                'message' => 'Failed to delete appliance. Please try again later.'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->handleDestroy($appliance, 'Appliance');
     }
 }

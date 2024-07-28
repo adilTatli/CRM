@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -25,14 +26,15 @@ class AuthController extends Controller
         try {
             $request->validated();
 
-            if (!Auth::attempt($request->only('email', 'password'))) {
+            $credentials = $request->only('email', 'password');
+
+            if (!$token = JWTAuth::attempt($credentials)) {
                 throw ValidationException::withMessages([
                     'email' => ['The provided credentials are incorrect.']
                 ]);
             }
 
             $user = Auth::user();
-            $token = $user->createToken('auth_token')->plainTextToken;
 
             Log::info('User logged in successfully.', [
                 'user_id' => $user->id,
@@ -77,7 +79,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
-            $request->user()->tokens()->delete();
+            JWTAuth::invalidate(JWTAuth::getToken());
 
             Log::info('User logged out successfully.', [
                 'user_id' => $request->user()->id,
