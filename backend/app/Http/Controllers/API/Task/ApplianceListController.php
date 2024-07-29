@@ -13,12 +13,45 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @OA\Tag(
+ *     name="Task/ApplianceList",
+ *     description="Operations related to appliance lists"
+ * )
+ */
 class ApplianceListController extends Controller
 {
     use HandlesResourceTrait;
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/task/tasks/{task}/appliances",
+     *     summary="Store a newly created appliance list",
+     *     tags={"Task/ApplianceList"},
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the task to which the appliance list belongs"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/ApplianceListRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Appliance list created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ApplianceListResourceCommon")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
      */
     public function store(ApplianceListRequest $request, Task $task): JsonResponse
     {
@@ -42,7 +75,45 @@ class ApplianceListController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/task/tasks/{task}/appliances/{appliance}",
+     *     summary="Update the specified appliance list",
+     *     tags={"Task/ApplianceList"},
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the task to which the appliance list belongs"
+     *     ),
+     *     @OA\Parameter(
+     *         name="applianceList",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the appliance list to update"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(ref="#/components/schemas/ApplianceListRequest")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Appliance list updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/ApplianceListResourceCommon")
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden, appliance list does not belong to the specified task"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
      */
     public function update(ApplianceListRequest $request, Task $task, ApplianceList $appliance): JsonResponse
     {
@@ -71,7 +142,37 @@ class ApplianceListController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/task/tasks/{task}/appliances/{appliance}",
+     *     summary="Remove the specified appliance list",
+     *     tags={"Task/ApplianceList"},
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the task to which the appliance list belongs"
+     *     ),
+     *     @OA\Parameter(
+     *         name="applianceList",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the appliance list to delete"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Appliance list deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden, appliance list does not belong to the specified task"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error"
+     *     )
+     * )
      */
     public function destroy(Task $task, ApplianceList $appliance): JsonResponse
     {

@@ -4,6 +4,18 @@ namespace App\Http\Requests\Additional;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="DistributorRequest",
+ *     required={"title"},
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         description="Distributor's name",
+ *         example="ACME Supplies"
+ *     )
+ * )
+ */
 class DistributorRequest extends FormRequest
 {
     /**

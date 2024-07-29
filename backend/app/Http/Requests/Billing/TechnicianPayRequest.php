@@ -4,6 +4,34 @@ namespace App\Http\Requests\Billing;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="TechnicianPayRequest",
+ *     type="object",
+ *     required={"payment_status"},
+ *     @OA\Property(
+ *         property="payment_amount",
+ *         type="number",
+ *         format="float",
+ *         description="Amount paid to the technician",
+ *         example=150.50
+ *     ),
+ *     @OA\Property(
+ *         property="paid_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Date and time when payment was made",
+ *         example="2024-07-28T14:00:00Z"
+ *     ),
+ *     @OA\Property(
+ *         property="payment_status",
+ *         type="string",
+ *         description="Status of the payment",
+ *         enum={"paid", "not paid"},
+ *         example="paid"
+ *     )
+ * )
+ */
 class TechnicianPayRequest extends FormRequest
 {
     /**

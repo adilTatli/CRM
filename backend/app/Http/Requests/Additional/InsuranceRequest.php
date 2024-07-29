@@ -4,6 +4,18 @@ namespace App\Http\Requests\Additional;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="InsuranceRequest",
+ *     required={"title"},
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         description="Insurance's name",
+ *         example="ACME Supplies"
+ *     )
+ * )
+ */
 class InsuranceRequest extends FormRequest
 {
     /**

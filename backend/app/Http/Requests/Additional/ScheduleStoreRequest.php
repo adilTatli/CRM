@@ -4,6 +4,56 @@ namespace App\Http\Requests\Additional;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="ScheduleStoreRequest",
+ *     required={"start_date", "end_date", "start_time", "end_time", "technicians", "area_id"},
+ *     @OA\Property(
+ *         property="start_date",
+ *         type="string",
+ *         format="date",
+ *         example="2024-08-01",
+ *         description="Start date of the schedule"
+ *     ),
+ *     @OA\Property(
+ *         property="end_date",
+ *         type="string",
+ *         format="date",
+ *         example="2024-08-01",
+ *         description="End date of the schedule"
+ *     ),
+ *     @OA\Property(
+ *         property="start_time",
+ *         type="string",
+ *         format="time",
+ *         example="09:00",
+ *         description="Start time of the schedule in HH:mm format"
+ *     ),
+ *     @OA\Property(
+ *         property="end_time",
+ *         type="string",
+ *         format="time",
+ *         example="17:00",
+ *         description="End time of the schedule in HH:mm format"
+ *     ),
+ *     @OA\Property(
+ *         property="technicians",
+ *         type="array",
+ *         @OA\Items(
+ *             type="integer",
+ *             example=1,
+ *             description="ID of the technician"
+ *         ),
+ *         description="Array of technician IDs"
+ *     ),
+ *     @OA\Property(
+ *         property="area_id",
+ *         type="integer",
+ *         example=1,
+ *         description="ID of the area"
+ *     )
+ * )
+ */
 class ScheduleStoreRequest extends FormRequest
 {
     /**

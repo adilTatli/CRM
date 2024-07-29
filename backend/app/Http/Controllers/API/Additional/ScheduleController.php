@@ -14,10 +14,31 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Tag(
+ *     name="Additional/Schedules",
+ *     description="API Endpoints for managing (additional) schedules"
+ * )
+ */
 class ScheduleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/additional/schedules",
+     *     operationId="getSchedules",
+     *     tags={"Additional/Schedules"},
+     *     summary="Get list of schedules",
+     *     description="Returns list of schedules with technicians",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/TechnicianResourceAdditional"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function index()
     {
@@ -39,7 +60,31 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/additional/schedules",
+     *     operationId="storeSchedule",
+     *     tags={"Additional/Schedules"},
+     *     summary="Store a new schedule",
+     *     description="Creates a new schedule for specified technicians",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ScheduleStoreRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="Conflict",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function store(ScheduleStoreRequest $request)
     {
@@ -84,7 +129,34 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/additional/schedules/{schedule}",
+     *     operationId="getScheduleById",
+     *     tags={"Additional/Schedules"},
+     *     summary="Get a schedule by ID",
+     *     description="Returns a schedule with its associated technicians",
+     *     @OA\Parameter(
+     *         name="schedule",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the schedule"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/ScheduleResourceAdditional")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not Found",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function show(Schedule $schedule)
     {
@@ -103,7 +175,33 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/additional/schedules/{schedule}",
+     *     operationId="updateSchedule",
+     *     tags={"Additional/Schedules"},
+     *     summary="Update a schedule",
+     *     description="Updates an existing schedule and its technicians",
+     *     @OA\Parameter(
+     *         name="schedule",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the schedule"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/ScheduleUpdateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function update(ScheduleUpdateRequest $request, Schedule $schedule)
     {
@@ -158,7 +256,29 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/additional/schedules/{schedule}",
+     *     operationId="deleteSchedule",
+     *     tags={"Additional/Schedules"},
+     *     summary="Delete a schedule",
+     *     description="Deletes a schedule by ID",
+     *     @OA\Parameter(
+     *         name="schedule",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the schedule"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function destroy(Schedule $schedule)
     {

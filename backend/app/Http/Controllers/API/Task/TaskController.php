@@ -14,12 +14,40 @@ use Exception;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Tag(
+ *     name="Task/Task",
+ *     description="Operations related to tasks"
+ * )
+ */
 class TaskController extends Controller
 {
     use TracksStatusChangesTrait;
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/task/tasks",
+     *     summary="Create a new task",
+     *     tags={"Task/Task"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/TaskStoreRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Task created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/TaskResource")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request - Status not found",
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error - Failed to create task",
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
      */
     public function store(TaskStoreRequest $request)
     {
@@ -68,7 +96,28 @@ class TaskController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/task/tasks/{task}",
+     *     summary="Get a specific task",
+     *     tags={"Task/Task"},
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Task retrieved successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/TaskResource")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error - Error fetching task",
+     *     ),
+     *     security={{"bearerAuth": {}}}
+     * )
      */
     public function show(Task $task)
     {

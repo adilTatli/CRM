@@ -4,6 +4,27 @@ namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="FileRequest",
+ *     type="object",
+ *     required={"file"},
+ *     @OA\Property(
+ *         property="file",
+ *         type="string",
+ *         format="binary",
+ *         description="The file to be uploaded",
+ *         example="file.pdf"
+ *     ),
+ *     @OA\Property(
+ *         property="file_note",
+ *         type="string",
+ *         description="Optional note or description for the file",
+ *         maxLength=255,
+ *         example="This is a sample file note."
+ *     )
+ * )
+ */
 class FileRequest extends FormRequest
 {
     /**

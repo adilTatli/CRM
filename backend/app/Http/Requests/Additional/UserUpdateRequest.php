@@ -4,6 +4,35 @@ namespace App\Http\Requests\Additional;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="UserUpdateRequest",
+ *     type="object",
+ *     title="UserUpdateRequest",
+ *     description="Request body for updating an existing user",
+ *     required={"name", "email"},
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="Updated name of the user",
+ *         example="John Doe"
+ *     ),
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         format="email",
+ *         description="Updated email address of the user",
+ *         example="johndoe@example.com"
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         type="string",
+ *         format="password",
+ *         description="Updated password for the user account (optional)",
+ *         example="newstrongpassword123"
+ *     )
+ * )
+ */
 class UserUpdateRequest extends FormRequest
 {
     /**

@@ -7,6 +7,17 @@ use App\Http\Resources\Common\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     schema="StatusChangeResourceManager",
+ *     description="Resource representing a status change",
+ *     @OA\Property(property="id", type="integer", description="Unique identifier of the status change"),
+ *     @OA\Property(property="task_id", type="integer", description="Identifier of the associated task"),
+ *     @OA\Property(property="status", ref="#/components/schemas/TaskStatusResourceCommon", description="The status associated with this change"),
+ *     @OA\Property(property="user", ref="#/components/schemas/UserResourceCommon", description="The user who made the status change"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Timestamp when the status change was recorded")
+ * )
+ */
 class StatusChangeResource extends JsonResource
 {
     /**

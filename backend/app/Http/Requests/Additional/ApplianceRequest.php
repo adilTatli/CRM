@@ -4,6 +4,20 @@ namespace App\Http\Requests\Additional;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="ApplianceRequest",
+ *     type="object",
+ *     title="ApplianceRequest",
+ *     description="Request payload for creating or updating an appliance",
+ *     required={"title"},
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         description="Title of the appliance"
+ *     )
+ * )
+ */
 class ApplianceRequest extends FormRequest
 {
     /**

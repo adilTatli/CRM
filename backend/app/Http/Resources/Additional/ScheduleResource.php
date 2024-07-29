@@ -6,6 +6,38 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @OA\Schema(
+ *     schema="ScheduleResourceAdditional",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", description="ID of the schedule"),
+ *     @OA\Property(property="date", type="string", format="date", description="Date of the schedule"),
+ *     @OA\Property(property="start_time", type="string", format="time", description="Start time of the schedule"),
+ *     @OA\Property(property="end_time", type="string", format="time", description="End time of the schedule"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", description="Creation timestamp"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", description="Update timestamp"),
+ *     @OA\Property(
+ *         property="users",
+ *         type="array",
+ *         @OA\Items(
+ *             type="object",
+ *             @OA\Property(property="id", type="integer", description="ID of the user"),
+ *             @OA\Property(property="name", type="string", description="Name of the user"),
+ *             @OA\Property(property="email", type="string", description="Email of the user"),
+ *             @OA\Property(property="phone_number", type="string", description="Phone number of the user"),
+ *             @OA\Property(
+ *                 property="areas",
+ *                 type="array",
+ *                 @OA\Items(
+ *                     type="object",
+ *                     @OA\Property(property="id", type="integer", description="ID of the area"),
+ *                     @OA\Property(property="title", type="string", description="Title of the area")
+ *                 )
+ *             )
+ *         )
+ *     )
+ * )
+ */
 class ScheduleResource extends JsonResource
 {
     /**

@@ -4,6 +4,27 @@ namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="CustomerPhoneRequest",
+ *     title="Customer Phone Request",
+ *     description="Request schema for creating or updating a customer phone record",
+ *     type="object",
+ *     required={"phone_number"},
+ *     @OA\Property(
+ *         property="phone_number",
+ *         type="string",
+ *         description="The phone number of the customer",
+ *         example="+1234567890"
+ *     ),
+ *     @OA\Property(
+ *         property="note",
+ *         type="string",
+ *         description="Optional note about the phone number",
+ *         example="Preferred contact number"
+ *     )
+ * )
+ */
 class CustomerPhoneRequest extends FormRequest
 {
     /**

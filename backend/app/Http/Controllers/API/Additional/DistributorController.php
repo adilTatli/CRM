@@ -8,12 +8,32 @@ use App\Http\Resources\Common\DistributorResource;
 use App\Models\Distributor;
 use App\Traits\Additional\HandlesResourceCRUD;
 
+/**
+ * @OA\Tag(
+ *     name="Additional/Distributors",
+ *     description="API for managing (additional) distributors"
+ * )
+ */
 class DistributorController extends Controller
 {
     use HandlesResourceCRUD;
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/additional/distributors",
+     *     tags={"Additional/Distributors"},
+     *     summary="Get list of distributors",
+     *     description="Returns list of distributors",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Distributor")
+     *         ),
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     * )
      */
     public function index()
     {
@@ -21,7 +41,23 @@ class DistributorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/additional/distributors",
+     *     tags={"Additional/Distributors"},
+     *     summary="Store a new distributor",
+     *     description="Store a new distributor",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/DistributorRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Appliance created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Distributor")
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=409, description="Conflict"),
+     * )
      */
     public function store(DistributorRequest $request)
     {
@@ -29,7 +65,25 @@ class DistributorController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/additional/distributors/{distributor}",
+     *     tags={"Additional/Distributors"},
+     *     summary="Get a specific distributor",
+     *     description="Get a specific distributor by its ID",
+     *     @OA\Parameter(
+     *         name="distributor",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Distributor")
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
+     * )
      */
     public function show(Distributor $distributor)
     {
@@ -37,7 +91,29 @@ class DistributorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/additional/distributors/{distributor}",
+     *     tags={"Additional/Distributors"},
+     *     summary="Update an existing distributor",
+     *     description="Update an existing distributor by its ID",
+     *     @OA\Parameter(
+     *         name="distributor",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/DistributorRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Distributor updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Distributor")
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
+     * )
      */
     public function update(DistributorRequest $request, Distributor $distributor)
     {
@@ -45,7 +121,24 @@ class DistributorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/additional/distributors/{distributor}",
+     *     tags={"Additional/Distributors"},
+     *     summary="Delete an distributor",
+     *     description="Delete an distributor by its ID",
+     *     @OA\Parameter(
+     *         name="distributor",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Distributor deleted successfully",
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
+     * )
      */
     public function destroy(Distributor $distributor)
     {

@@ -13,10 +13,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @OA\Tag(
+ *     name="Task/Files",
+ *     description="API Endpoints for managing task files"
+ * )
+ */
 class FileController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/task/tasks/{task}/files",
+     *     tags={"Task/Files"},
+     *     summary="Upload a new file for a task",
+     *     description="Upload a new file and associate it with a task.",
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/FileRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="File uploaded successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/FileResource")
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function store(FileRequest $request, Task $task): JsonResponse
     {
@@ -46,7 +77,39 @@ class FileController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/task/tasks/{task}/files/{file}",
+     *     tags={"Task/Files"},
+     *     summary="Get a specific file associated with a task",
+     *     description="Retrieve a specific file associated with a task.",
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="file",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the file",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="File retrieved successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/FileResource")
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function show(Task $task, TaskFile $file): JsonResponse
     {
@@ -60,7 +123,43 @@ class FileController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/task/tasks/{task}/files/{file}",
+     *     tags={"Task/Files"},
+     *     summary="Update a file associated with a task",
+     *     description="Update the details of a specific file associated with a task.",
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="file",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the file",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/FileRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="File updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/FileResource")
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function update(FileRequest $request, Task $task, TaskFile $file): JsonResponse
     {
@@ -95,7 +194,38 @@ class FileController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/task/tasks/{task}/files/{file}",
+     *     tags={"Task/Files"},
+     *     summary="Delete a file associated with a task",
+     *     description="Remove a specific file associated with a task.",
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="file",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the file",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="File deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function destroy(Task $task, TaskFile $file): JsonResponse
     {

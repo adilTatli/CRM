@@ -4,6 +4,55 @@ namespace App\Http\Requests\Dispatch;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @OA\Schema(
+ *     schema="TaskTechnicianUpdateRequest",
+ *     type="object",
+ *     title="Task Technician Update Request",
+ *     description="Request for updating a technician's assignment details for a task",
+ *     required={"date", "start_time", "end_time"},
+ *     @OA\Property(
+ *         property="date",
+ *         type="string",
+ *         format="date",
+ *         description="Date of the assignment"
+ *     ),
+ *     @OA\Property(
+ *         property="start_time",
+ *         type="string",
+ *         format="time",
+ *         description="Start time of the assignment"
+ *     ),
+ *     @OA\Property(
+ *         property="end_time",
+ *         type="string",
+ *         format="time",
+ *         description="End time of the assignment"
+ *     ),
+ *     @OA\Property(
+ *         property="payment_amount",
+ *         type="number",
+ *         format="float",
+ *         description="Payment amount for the technician",
+ *         nullable=true
+ *     ),
+ *     @OA\Property(
+ *         property="paid_at",
+ *         type="string",
+ *         format="date",
+ *         description="Payment date",
+ *         nullable=true
+ *     ),
+ *     @OA\Property(
+ *         property="payment_status",
+ *         type="string",
+ *         description="Payment status",
+ *         enum={"paid", "not paid"},
+ *         nullable=true
+ *     )
+ * )
+ */
 class TaskTechnicianUpdateRequest extends FormRequest
 {
     /**

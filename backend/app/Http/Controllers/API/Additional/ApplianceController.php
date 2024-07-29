@@ -9,13 +9,10 @@ use App\Models\Appliance;
 use App\Traits\Additional\HandlesResourceCRUD;
 
 /**
- * @OA\Info(
- *     title="My Doc API",
- *     version="1.0.0"
- * ),
- * @OA\PathItem(
- *     path="/api/"
- * ),
+ * @OA\Tag(
+ *     name="Additional/Appliances",
+ *     description="API Endpoints for managing (additional) appliances"
+ * )
  */
 class ApplianceController extends Controller
 {
@@ -23,19 +20,19 @@ class ApplianceController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/additional/appliances",
+     *     path="/api/additional/appliances",
+     *     tags={"Additional/Appliances"},
      *     summary="Get list of appliances",
-     *     tags={"Appliance"},
+     *     description="Returns list of appliances",
      *     @OA\Response(
      *         response=200,
-     *         description="List of appliances",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Appliance"))
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Appliance")
+     *         ),
      *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Internal Server Error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
-     *     )
+     *     @OA\Response(response=401, description="Unauthorized"),
      * )
      */
     public function index()
@@ -45,9 +42,10 @@ class ApplianceController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/additional/appliances",
-     *     summary="Create a new appliance",
-     *     tags={"Appliance"},
+     *     path="/api/additional/appliances",
+     *     tags={"Additional/Appliances"},
+     *     summary="Store a new appliance",
+     *     description="Store a new appliance",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/ApplianceRequest")
@@ -57,16 +55,8 @@ class ApplianceController extends Controller
      *         description="Appliance created successfully",
      *         @OA\JsonContent(ref="#/components/schemas/Appliance")
      *     ),
-     *     @OA\Response(
-     *         response=409,
-     *         description="Appliance with this title already exists",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Internal Server Error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
-     *     )
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=409, description="Conflict"),
      * )
      */
     public function store(ApplianceRequest $request)
@@ -76,26 +66,23 @@ class ApplianceController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/additional/appliances/{appliance}",
-     *     summary="Get an appliance by ID",
-     *     tags={"Appliance"},
+     *     path="/api/additional/appliances/{appliance}",
+     *     tags={"Additional/Appliances"},
+     *     summary="Get a specific appliance",
+     *     description="Get a specific appliance by its ID",
      *     @OA\Parameter(
      *         name="appliance",
      *         in="path",
-     *         description="Appliance ID",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Appliance details",
+     *         description="Successful operation",
      *         @OA\JsonContent(ref="#/components/schemas/Appliance")
      *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Internal Server Error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
-     *     )
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
      * )
      */
     public function show(Appliance $appliance)
@@ -105,13 +92,13 @@ class ApplianceController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/additional/appliances/{appliance}",
+     *     path="/api/additional/appliances/{appliance}",
+     *     tags={"Additional/Appliances"},
      *     summary="Update an existing appliance",
-     *     tags={"Appliance"},
+     *     description="Update an existing appliance by its ID",
      *     @OA\Parameter(
      *         name="appliance",
      *         in="path",
-     *         description="Appliance ID",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
@@ -124,16 +111,8 @@ class ApplianceController extends Controller
      *         description="Appliance updated successfully",
      *         @OA\JsonContent(ref="#/components/schemas/Appliance")
      *     ),
-     *     @OA\Response(
-     *         response=409,
-     *         description="Appliance with this title already exists",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
-     *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Internal Server Error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
-     *     )
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
      * )
      */
     public function update(ApplianceRequest $request, Appliance $appliance)
@@ -143,26 +122,22 @@ class ApplianceController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/additional/appliances/{appliance}",
+     *     path="/api/additional/appliances/{appliance}",
+     *     tags={"Additional/Appliances"},
      *     summary="Delete an appliance",
-     *     tags={"Appliance"},
+     *     description="Delete an appliance by its ID",
      *     @OA\Parameter(
      *         name="appliance",
      *         in="path",
-     *         description="Appliance ID",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Appliance deleted successfully",
-     *         @OA\JsonContent(ref="#/components/schemas/SuccessResponse")
      *     ),
-     *     @OA\Response(
-     *         response=500,
-     *         description="Internal Server Error",
-     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
-     *     )
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
      * )
      */
     public function destroy(Appliance $appliance)

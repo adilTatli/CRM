@@ -8,12 +8,32 @@ use App\Http\Resources\Common\InsuranceResource;
 use App\Models\Insurance;
 use App\Traits\Additional\HandlesResourceCRUD;
 
+/**
+ * @OA\Tag(
+ *     name="Additional/Insurances",
+ *     description="API for managing (additional) insurances"
+ * )
+ */
 class InsuranceController extends Controller
 {
     use HandlesResourceCRUD;
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/additional/insurances",
+     *     tags={"Additional/Insurances"},
+     *     summary="Get list of insurances",
+     *     description="Returns list of insurances",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Insurance")
+     *         ),
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     * )
      */
     public function index()
     {
@@ -21,7 +41,23 @@ class InsuranceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/additional/insurances",
+     *     tags={"Additional/Insurances"},
+     *     summary="Store a new insurance",
+     *     description="Store a new insurance",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/InsuranceRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Insurance created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Insurance")
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=409, description="Conflict"),
+     * )
      */
     public function store(InsuranceRequest $request)
     {
@@ -29,7 +65,25 @@ class InsuranceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/additional/insurances/{insurance}",
+     *     tags={"Additional/Insurances"},
+     *     summary="Get a specific insurance",
+     *     description="Get a specific insurance by its ID",
+     *     @OA\Parameter(
+     *         name="insurance",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Insurance")
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
+     * )
      */
     public function show(Insurance $insurance)
     {
@@ -37,7 +91,29 @@ class InsuranceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/additional/insurances/{insurance}",
+     *     tags={"Additional/Insurances"},
+     *     summary="Update an existing insurance",
+     *     description="Update an existing insurance by its ID",
+     *     @OA\Parameter(
+     *         name="insurance",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/InsuranceRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Insurance updated successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Insurance")
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
+     * )
      */
     public function update(InsuranceRequest $request, Insurance $insurance)
     {
@@ -45,7 +121,24 @@ class InsuranceController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/additional/insurances/{insurance}",
+     *     tags={"Additional/Insurances"},
+     *     summary="Delete an insurance",
+     *     description="Delete an insurance by its ID",
+     *     @OA\Parameter(
+     *         name="insurance",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Insurance deleted successfully",
+     *     ),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found"),
+     * )
      */
     public function destroy(Insurance $insurance)
     {

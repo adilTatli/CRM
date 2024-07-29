@@ -9,15 +9,38 @@ use App\Http\Resources\Dispatch\TechnicianResource;
 use App\Models\Task;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Tag(
+ *     name="Task-Technicians",
+ *     description="Operations about technicians"
+ * )
+ */
 class TaskTechnicianController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/dispatch/technicians",
+     *     summary="Get list of technicians",
+     *     description="Fetches a list of technicians.",
+     *     tags={"Task-Technicians"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/TechnicianResourceDispatch"))
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Failed to fetch technicians.")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -32,7 +55,32 @@ class TaskTechnicianController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/dispatch/task-technicians",
+     *     summary="Assign task to technician",
+     *     description="Assign a task to a technician.",
+     *     tags={"Task-Technicians"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/TaskTechnicianStoreRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Task assigned to technician successfully.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Failed to assign task to technician.")
+     *         )
+     *     )
+     * )
      */
     public function store(TaskTechnicianStoreRequest $request)
     {
@@ -59,7 +107,39 @@ class TaskTechnicianController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/dispatch/task-technicians/{id}",
+     *     summary="Get technician details",
+     *     description="Fetches details of a specific technician.",
+     *     tags={"Task-Technicians"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/TechnicianResourceDispatch")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="The specified user is not a technician.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Failed to fetch technician.")
+     *         )
+     *     )
+     * )
      */
     public function show(User $task_technician)
     {
@@ -80,7 +160,46 @@ class TaskTechnicianController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/dispatch/task-technicians/{id}",
+     *     summary="Update task technician assignment",
+     *     description="Updates a task technician assignment.",
+     *     tags={"Task-Technicians"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/TaskTechnicianUpdateRequest")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Task technician assignment updated successfully.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not Found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Task technician assignment not found.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Failed to update task technician assignment.")
+     *         )
+     *     )
+     * )
      */
     public function update(TaskTechnicianUpdateRequest $request, $task_technician_id)
     {
@@ -114,7 +233,42 @@ class TaskTechnicianController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/dispatch/task-technicians/{id}",
+     *     summary="Delete task technician assignment",
+     *     description="Deletes a task technician assignment.",
+     *     tags={"Task-Technicians"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="message", type="string", example="Task technician assignment deleted successfully.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not Found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Task technician assignment not found.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", example="Failed to delete task technician assignment.")
+     *         )
+     *     )
+     * )
      */
     public function destroy($task_technician_id)
     {

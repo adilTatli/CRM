@@ -14,6 +14,113 @@ use App\Http\Resources\Part\PartResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     schema="TaskResource",
+ *     title="Task Resource",
+ *     description="Resource schema for a task",
+ *     type="object",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         description="Unique identifier of the task",
+ *         example=1
+ *     ),
+ *     @OA\Property(
+ *         property="work_order",
+ *         type="string",
+ *         description="Work order number",
+ *         example="WO123456"
+ *     ),
+ *     @OA\Property(
+ *         property="customer_name",
+ *         type="string",
+ *         description="Name of the customer",
+ *         example="John Doe"
+ *     ),
+ *     @OA\Property(
+ *         property="street",
+ *         type="string",
+ *         description="Street address",
+ *         example="123 Elm Street"
+ *     ),
+ *     @OA\Property(
+ *         property="city",
+ *         type="string",
+ *         description="City",
+ *         example="Springfield"
+ *     ),
+ *     @OA\Property(
+ *         property="zip",
+ *         type="string",
+ *         description="Zip code",
+ *         example="12345"
+ *     ),
+ *     @OA\Property(
+ *         property="authorization",
+ *         type="string",
+ *         description="Authorization details",
+ *         example="Authorization for work"
+ *     ),
+ *     @OA\Property(
+ *         property="insurance",
+ *         ref="#/components/schemas/InsuranceResourceCommon"
+ *     ),
+ *     @OA\Property(
+ *         property="status",
+ *         ref="#/components/schemas/TaskStatusResourceCommon"
+ *     ),
+ *     @OA\Property(
+ *         property="created_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Creation timestamp of the task",
+ *         example="2024-07-28T12:34:56Z"
+ *     ),
+ *     @OA\Property(
+ *         property="updated_at",
+ *         type="string",
+ *         format="date-time",
+ *         description="Last update timestamp of the task",
+ *         example="2024-07-28T12:34:56Z"
+ *     ),
+ *     @OA\Property(
+ *         property="notes",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/NoteResource")
+ *     ),
+ *     @OA\Property(
+ *         property="phones",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/CustomerPhoneResource")
+ *     ),
+ *     @OA\Property(
+ *         property="files",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/FileResource")
+ *     ),
+ *     @OA\Property(
+ *         property="appliance_lists",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/ApplianceListResourceCommon")
+ *     ),
+ *     @OA\Property(
+ *         property="received_payments",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/ReceivedPaymentResource")
+ *     ),
+ *     @OA\Property(
+ *         property="technicians",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/TechnicianResourceDispatch")
+ *     ),
+ *     @OA\Property(
+ *         property="parts",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/PartResource")
+ *     )
+ * )
+ */
 class TaskResource extends JsonResource
 {
     /**

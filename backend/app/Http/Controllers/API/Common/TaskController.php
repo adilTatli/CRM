@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Tag(
+ *     name="Common/Tasks",
+ *     description="API Endpoints for managing tasks"
+ * )
+ */
 class TaskController extends Controller
 {
     use TracksStatusChangesTrait;
@@ -24,12 +30,62 @@ class TaskController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/tasks",
+     *     tags={"Common/Tasks"},
+     *     summary="Get a list of tasks",
+     *     description="Retrieve a list of tasks, optionally filtered by status and paginated.",
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         description="Comma-separated list of status IDs to filter tasks by",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of tasks per page for pagination",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=20)
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number for pagination",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of tasks retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="current_page", type="integer"),
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Task")),
+     *             @OA\Property(property="first_page_url", type="string"),
+     *             @OA\Property(property="from", type="integer"),
+     *             @OA\Property(property="last_page", type="integer"),
+     *             @OA\Property(property="last_page_url", type="string"),
+     *             @OA\Property(property="next_page_url", type="string"),
+     *             @OA\Property(property="path", type="string"),
+     *             @OA\Property(property="per_page", type="integer"),
+     *             @OA\Property(property="prev_page_url", type="string"),
+     *             @OA\Property(property="to", type="integer"),
+     *             @OA\Property(property="total", type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function index(Request $request)
     {
         try {
             $statuses = $request->query('status');
+            $perPage = $request->query('per_page', 20);
 
             $query = Task::query();
 
@@ -38,7 +94,7 @@ class TaskController extends Controller
                 $query->whereIn('status_id', $statusesArray);
             }
 
-            $tasks = $query->get();
+            $tasks = $query->paginate($perPage);
 
             return response()->json($tasks, 200);
         } catch (Exception $e) {
@@ -49,7 +105,32 @@ class TaskController extends Controller
 
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/tasks/{id}",
+     *     tags={"Common/Tasks"},
+     *     summary="Get a specific task by ID",
+     *     description="Retrieve a specific task by its ID.",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Task retrieved successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/TaskResource")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Task not found"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function show(string $id)
     {
@@ -75,7 +156,34 @@ class TaskController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/tasks/{task}",
+     *     tags={"Common/Tasks"},
+     *     summary="Update a specific task",
+     *     description="Update the status of a specific task.",
+     *     @OA\Parameter(
+     *         name="task",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the task",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"status_id"},
+     *             @OA\Property(property="status_id", type="integer", description="ID of the new status")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Task updated successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal Server Error"
+     *     )
+     * )
      */
     public function update(Request $request, Task $task)
     {

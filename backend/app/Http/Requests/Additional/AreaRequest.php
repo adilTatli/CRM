@@ -4,6 +4,20 @@ namespace App\Http\Requests\Additional;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="AreaRequest",
+ *     type="object",
+ *     title="AreaRequest",
+ *     description="Request payload for creating or updating an area",
+ *     required={"title"},
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         description="Title of the area"
+ *     )
+ * )
+ */
 class AreaRequest extends FormRequest
 {
     /**

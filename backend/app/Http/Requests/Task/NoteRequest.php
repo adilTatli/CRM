@@ -4,6 +4,18 @@ namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @OA\Schema(
+ *     schema="NoteRequest",
+ *     type="object",
+ *     required={"text"},
+ *     @OA\Property(
+ *         property="text",
+ *         type="string",
+ *         example="This is a note text"
+ *     )
+ * )
+ */
 class NoteRequest extends FormRequest
 {
     /**
